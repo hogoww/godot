@@ -50,119 +50,119 @@ class GDScriptAnalyzer {
 		}
 	};
 
-	const GDScriptParser::EnumNode *current_enum = nullptr;
-	GDScriptParser::LambdaNode *current_lambda = nullptr;
-	List<GDScriptParser::LambdaNode *> pending_body_resolution_lambdas;
-	HashMap<const GDScriptParser::ClassNode *, Ref<GDScriptParserRef>> external_class_parser_cache;
+	const GDScriptASTNodes::EnumNode *current_enum = nullptr;
+	GDScriptASTNodes::LambdaNode *current_lambda = nullptr;
+	List<GDScriptASTNodes::LambdaNode *> pending_body_resolution_lambdas;
+	HashMap<const GDScriptASTNodes::ClassNode *, Ref<GDScriptParserRef>> external_class_parser_cache;
 	bool static_context = false;
 
 	// Tests for detecting invalid overloading of script members
-	static _FORCE_INLINE_ bool has_member_name_conflict_in_script_class(const StringName &p_name, const GDScriptParser::ClassNode *p_current_class_node, const GDScriptParser::Node *p_member);
+	static _FORCE_INLINE_ bool has_member_name_conflict_in_script_class(const StringName &p_name, const GDScriptASTNodes::ClassNode *p_current_class_node, const GDScriptASTNodes::Node *p_member);
 	static _FORCE_INLINE_ bool has_member_name_conflict_in_native_type(const StringName &p_name, const StringName &p_native_type_string);
-	Error check_native_member_name_conflict(const StringName &p_member_name, const GDScriptParser::Node *p_member_node, const StringName &p_native_type_string);
-	Error check_class_member_name_conflict(const GDScriptParser::ClassNode *p_class_node, const StringName &p_member_name, const GDScriptParser::Node *p_member_node);
+	Error check_native_member_name_conflict(const StringName &p_member_name, const GDScriptASTNodes::Node *p_member_node, const StringName &p_native_type_string);
+	Error check_class_member_name_conflict(const GDScriptASTNodes::ClassNode *p_class_node, const StringName &p_member_name, const GDScriptASTNodes::Node *p_member_node);
 
-	void get_class_node_current_scope_classes(GDScriptParser::ClassNode *p_node, List<GDScriptParser::ClassNode *> *p_list, GDScriptParser::Node *p_source);
+	void get_class_node_current_scope_classes(GDScriptASTNodes::ClassNode *p_node, List<GDScriptASTNodes::ClassNode *> *p_list, GDScriptASTNodes::Node *p_source);
 
-	Error resolve_class_inheritance(GDScriptParser::ClassNode *p_class, const GDScriptParser::Node *p_source = nullptr);
-	Error resolve_class_inheritance(GDScriptParser::ClassNode *p_class, bool p_recursive);
-	GDScriptParser::DataType resolve_datatype(GDScriptParser::TypeNode *p_type);
+	Error resolve_class_inheritance(GDScriptASTNodes::ClassNode *p_class, const GDScriptASTNodes::Node *p_source = nullptr);
+	Error resolve_class_inheritance(GDScriptASTNodes::ClassNode *p_class, bool p_recursive);
+	GDScriptASTNodes::DataType resolve_datatype(GDScriptASTNodes::TypeNode *p_type);
 
-	void resolve_annotation(GDScriptParser::AnnotationNode *p_annotation);
-	void resolve_class_member(GDScriptParser::ClassNode *p_class, const StringName &p_name, const GDScriptParser::Node *p_source = nullptr);
-	void resolve_class_member(GDScriptParser::ClassNode *p_class, uint32_t p_index, const GDScriptParser::Node *p_source = nullptr);
-	void resolve_class_interface(GDScriptParser::ClassNode *p_class, const GDScriptParser::Node *p_source = nullptr);
-	void resolve_class_interface(GDScriptParser::ClassNode *p_class, bool p_recursive);
-	void resolve_class_body(GDScriptParser::ClassNode *p_class, const GDScriptParser::Node *p_source = nullptr);
-	void resolve_class_body(GDScriptParser::ClassNode *p_class, bool p_recursive);
-	void resolve_function_signature(GDScriptParser::FunctionNode *p_function, const GDScriptParser::Node *p_source = nullptr, bool p_is_lambda = false);
-	void resolve_function_body(GDScriptParser::FunctionNode *p_function, bool p_is_lambda = false);
-	void resolve_node(GDScriptParser::Node *p_node, bool p_is_root = true);
-	void resolve_suite(GDScriptParser::SuiteNode *p_suite, bool p_is_root = true);
-	void resolve_assignable(GDScriptParser::AssignableNode *p_assignable, const char *p_kind);
-	void resolve_variable(GDScriptParser::VariableNode *p_variable, bool p_is_local);
-	void resolve_constant(GDScriptParser::ConstantNode *p_constant, bool p_is_local);
-	void resolve_parameter(GDScriptParser::ParameterNode *p_parameter);
-	void resolve_if(GDScriptParser::IfNode *p_if);
-	void resolve_for(GDScriptParser::ForNode *p_for);
-	void resolve_while(GDScriptParser::WhileNode *p_while);
-	void resolve_assert(GDScriptParser::AssertNode *p_assert);
-	void resolve_match(GDScriptParser::MatchNode *p_match);
-	void resolve_match_branch(GDScriptParser::MatchBranchNode *p_match_branch, GDScriptParser::ExpressionNode *p_match_test);
-	void resolve_match_pattern(GDScriptParser::PatternNode *p_match_pattern, GDScriptParser::ExpressionNode *p_match_test);
-	void resolve_return(GDScriptParser::ReturnNode *p_return);
+	void resolve_annotation(GDScriptASTNodes::AnnotationNode *p_annotation);
+	void resolve_class_member(GDScriptASTNodes::ClassNode *p_class, const StringName &p_name, const GDScriptASTNodes::Node *p_source = nullptr);
+	void resolve_class_member(GDScriptASTNodes::ClassNode *p_class, uint32_t p_index, const GDScriptASTNodes::Node *p_source = nullptr);
+	void resolve_class_interface(GDScriptASTNodes::ClassNode *p_class, const GDScriptASTNodes::Node *p_source = nullptr);
+	void resolve_class_interface(GDScriptASTNodes::ClassNode *p_class, bool p_recursive);
+	void resolve_class_body(GDScriptASTNodes::ClassNode *p_class, const GDScriptASTNodes::Node *p_source = nullptr);
+	void resolve_class_body(GDScriptASTNodes::ClassNode *p_class, bool p_recursive);
+	void resolve_function_signature(GDScriptASTNodes::FunctionNode *p_function, const GDScriptASTNodes::Node *p_source = nullptr, bool p_is_lambda = false);
+	void resolve_function_body(GDScriptASTNodes::FunctionNode *p_function, bool p_is_lambda = false);
+	void resolve_node(GDScriptASTNodes::Node *p_node, bool p_is_root = true);
+	void resolve_suite(GDScriptASTNodes::SuiteNode *p_suite, bool p_is_root = true);
+	void resolve_assignable(GDScriptASTNodes::AssignableNode *p_assignable, const char *p_kind);
+	void resolve_variable(GDScriptASTNodes::VariableNode *p_variable, bool p_is_local);
+	void resolve_constant(GDScriptASTNodes::ConstantNode *p_constant, bool p_is_local);
+	void resolve_parameter(GDScriptASTNodes::ParameterNode *p_parameter);
+	void resolve_if(GDScriptASTNodes::IfNode *p_if);
+	void resolve_for(GDScriptASTNodes::ForNode *p_for);
+	void resolve_while(GDScriptASTNodes::WhileNode *p_while);
+	void resolve_assert(GDScriptASTNodes::AssertNode *p_assert);
+	void resolve_match(GDScriptASTNodes::MatchNode *p_match);
+	void resolve_match_branch(GDScriptASTNodes::MatchBranchNode *p_match_branch, GDScriptASTNodes::ExpressionNode *p_match_test);
+	void resolve_match_pattern(GDScriptASTNodes::PatternNode *p_match_pattern, GDScriptASTNodes::ExpressionNode *p_match_test);
+	void resolve_return(GDScriptASTNodes::ReturnNode *p_return);
 
 	// Reduction functions.
-	void reduce_expression(GDScriptParser::ExpressionNode *p_expression, bool p_is_root = false);
-	void reduce_array(GDScriptParser::ArrayNode *p_array);
-	void reduce_assignment(GDScriptParser::AssignmentNode *p_assignment);
-	void reduce_await(GDScriptParser::AwaitNode *p_await);
-	void reduce_binary_op(GDScriptParser::BinaryOpNode *p_binary_op);
-	void reduce_call(GDScriptParser::CallNode *p_call, bool p_is_await = false, bool p_is_root = false);
-	void reduce_cast(GDScriptParser::CastNode *p_cast);
-	void reduce_dictionary(GDScriptParser::DictionaryNode *p_dictionary);
-	void reduce_get_node(GDScriptParser::GetNodeNode *p_get_node);
-	void reduce_identifier(GDScriptParser::IdentifierNode *p_identifier, bool can_be_builtin = false);
-	void reduce_identifier_from_base(GDScriptParser::IdentifierNode *p_identifier, GDScriptParser::DataType *p_base = nullptr);
-	void reduce_lambda(GDScriptParser::LambdaNode *p_lambda);
-	void reduce_literal(GDScriptParser::LiteralNode *p_literal);
-	void reduce_preload(GDScriptParser::PreloadNode *p_preload);
-	void reduce_self(GDScriptParser::SelfNode *p_self);
-	void reduce_subscript(GDScriptParser::SubscriptNode *p_subscript, bool p_can_be_pseudo_type = false);
-	void reduce_ternary_op(GDScriptParser::TernaryOpNode *p_ternary_op, bool p_is_root = false);
-	void reduce_type_test(GDScriptParser::TypeTestNode *p_type_test);
-	void reduce_unary_op(GDScriptParser::UnaryOpNode *p_unary_op);
+	void reduce_expression(GDScriptASTNodes::ExpressionNode *p_expression, bool p_is_root = false);
+	void reduce_array(GDScriptASTNodes::ArrayNode *p_array);
+	void reduce_assignment(GDScriptASTNodes::AssignmentNode *p_assignment);
+	void reduce_await(GDScriptASTNodes::AwaitNode *p_await);
+	void reduce_binary_op(GDScriptASTNodes::BinaryOpNode *p_binary_op);
+	void reduce_call(GDScriptASTNodes::CallNode *p_call, bool p_is_await = false, bool p_is_root = false);
+	void reduce_cast(GDScriptASTNodes::CastNode *p_cast);
+	void reduce_dictionary(GDScriptASTNodes::DictionaryNode *p_dictionary);
+	void reduce_get_node(GDScriptASTNodes::GetNodeNode *p_get_node);
+	void reduce_identifier(GDScriptASTNodes::IdentifierNode *p_identifier, bool can_be_builtin = false);
+	void reduce_identifier_from_base(GDScriptASTNodes::IdentifierNode *p_identifier, GDScriptASTNodes::DataType *p_base = nullptr);
+	void reduce_lambda(GDScriptASTNodes::LambdaNode *p_lambda);
+	void reduce_literal(GDScriptASTNodes::LiteralNode *p_literal);
+	void reduce_preload(GDScriptASTNodes::PreloadNode *p_preload);
+	void reduce_self(GDScriptASTNodes::SelfNode *p_self);
+	void reduce_subscript(GDScriptASTNodes::SubscriptNode *p_subscript, bool p_can_be_pseudo_type = false);
+	void reduce_ternary_op(GDScriptASTNodes::TernaryOpNode *p_ternary_op, bool p_is_root = false);
+	void reduce_type_test(GDScriptASTNodes::TypeTestNode *p_type_test);
+	void reduce_unary_op(GDScriptASTNodes::UnaryOpNode *p_unary_op);
 
 	// These methods provide a fallback mechanism for constant folding in constant contexts (constant initializers,
 	// annotation arguments) and allow constant folding even when the normal constant folding mechanism does not consider
 	// an expression to be constant (usually due to the presence of `[...]` and `{...}` constructs in it).
 	// These methods assume that the normal expression reduction mechanism has already been performed.
-	Variant make_expression_reduced_value(GDScriptParser::ExpressionNode *p_expression, bool &r_is_reduced);
-	Variant make_array_reduced_value(GDScriptParser::ArrayNode *p_array, bool &r_is_reduced);
-	Variant make_dictionary_reduced_value(GDScriptParser::DictionaryNode *p_dictionary, bool &r_is_reduced);
-	Variant make_subscript_reduced_value(GDScriptParser::SubscriptNode *p_subscript, bool &r_is_reduced);
-	Variant make_call_reduced_value(GDScriptParser::CallNode *p_call, bool &r_is_reduced);
-	Variant make_binary_op_reduced_value(GDScriptParser::BinaryOpNode *p_binary_op, bool &r_is_reduced);
-	Variant make_ternary_op_reduced_value(GDScriptParser::TernaryOpNode *p_ternary_op, bool &r_is_reduced);
-	Variant make_cast_reduced_value(GDScriptParser::CastNode *p_cast, bool &r_is_reduced);
-	Variant make_type_test_reduced_value(GDScriptParser::TypeTestNode *p_type_test, bool &r_is_reduced);
+	Variant make_expression_reduced_value(GDScriptASTNodes::ExpressionNode *p_expression, bool &r_is_reduced);
+	Variant make_array_reduced_value(GDScriptASTNodes::ArrayNode *p_array, bool &r_is_reduced);
+	Variant make_dictionary_reduced_value(GDScriptASTNodes::DictionaryNode *p_dictionary, bool &r_is_reduced);
+	Variant make_subscript_reduced_value(GDScriptASTNodes::SubscriptNode *p_subscript, bool &r_is_reduced);
+	Variant make_call_reduced_value(GDScriptASTNodes::CallNode *p_call, bool &r_is_reduced);
+	Variant make_binary_op_reduced_value(GDScriptASTNodes::BinaryOpNode *p_binary_op, bool &r_is_reduced);
+	Variant make_ternary_op_reduced_value(GDScriptASTNodes::TernaryOpNode *p_ternary_op, bool &r_is_reduced);
+	Variant make_cast_reduced_value(GDScriptASTNodes::CastNode *p_cast, bool &r_is_reduced);
+	Variant make_type_test_reduced_value(GDScriptASTNodes::TypeTestNode *p_type_test, bool &r_is_reduced);
 
 	// Helpers.
-	Array make_array_from_element_datatype(const GDScriptParser::DataType &p_element_datatype, const GDScriptParser::Node *p_source_node = nullptr);
-	Dictionary make_dictionary_from_element_datatype(const GDScriptParser::DataType &p_key_element_datatype, const GDScriptParser::DataType &p_value_element_datatype, const GDScriptParser::Node *p_source_node = nullptr);
-	GDScriptParser::DataType meta_type_from_container_type(const ContainerType &p_type, const GDScriptParser::Node *p_source);
-	GDScriptParser::DataType type_from_script(const Ref<Script> &p_script, const GDScriptParser::Node *p_source, bool p_is_meta_type);
-	GDScriptParser::DataType type_from_variant(const Variant &p_value, const GDScriptParser::Node *p_source);
-	GDScriptParser::DataType type_from_property_hint_string(const String &p_type_name) const;
-	GDScriptParser::DataType type_from_property(const PropertyInfo &p_property, bool p_is_arg, const GDScriptParser::Node *p_source) const;
-	GDScriptParser::DataType make_global_class_meta_type(const StringName &p_class_name, const GDScriptParser::Node *p_source) const;
-	bool get_function_signature(GDScriptParser::Node *p_source, bool p_is_constructor, GDScriptParser::DataType base_type, const StringName &p_function, GDScriptParser::DataType &r_return_type, List<GDScriptParser::DataType> &r_par_types, int &r_default_arg_count, BitField<MethodFlags> &r_method_flags, StringName *r_native_class = nullptr);
-	bool function_signature_from_info(const MethodInfo &p_info, GDScriptParser::DataType &r_return_type, List<GDScriptParser::DataType> &r_par_types, int &r_default_arg_count, BitField<MethodFlags> &r_method_flags, const GDScriptParser::Node *p_source);
-	void validate_call_arg(const List<GDScriptParser::DataType> &p_par_types, int p_default_args_count, bool p_is_vararg, const GDScriptParser::CallNode *p_call);
-	void validate_call_arg(const MethodInfo &p_method, const GDScriptParser::CallNode *p_call);
-	GDScriptParser::DataType get_operation_type(Variant::Operator p_operation, const GDScriptParser::DataType &p_a, const GDScriptParser::DataType &p_b, bool &r_valid, const GDScriptParser::Node *p_source);
-	GDScriptParser::DataType get_operation_type(Variant::Operator p_operation, const GDScriptParser::DataType &p_a, bool &r_valid, const GDScriptParser::Node *p_source);
-	void update_const_expression_builtin_type(GDScriptParser::ExpressionNode *p_expression, const GDScriptParser::DataType &p_type, const char *p_usage, bool p_is_cast = false);
-	void update_array_literal_element_type(GDScriptParser::ArrayNode *p_array, const GDScriptParser::DataType &p_element_type);
-	void update_dictionary_literal_element_type(GDScriptParser::DictionaryNode *p_dictionary, const GDScriptParser::DataType &p_key_element_type, const GDScriptParser::DataType &p_value_element_type);
-	bool is_type_compatible(const GDScriptParser::DataType &p_target, const GDScriptParser::DataType &p_source, bool p_allow_implicit_conversion = false, const GDScriptParser::Node *p_source_node = nullptr);
-	bool is_type_compatible_strict_collections(const GDScriptParser::DataType &p_target, const GDScriptParser::DataType &p_source);
-	void push_error(const String &p_message, const GDScriptParser::Node *p_origin = nullptr) const;
-	void push_error(const String &p_message, const GDScriptParser::Node *p_origin, int p_start_line, int p_start_column, int p_end_line, int p_end_column) const;
+	Array make_array_from_element_datatype(const GDScriptASTNodes::DataType &p_element_datatype, const GDScriptASTNodes::Node *p_source_node = nullptr);
+	Dictionary make_dictionary_from_element_datatype(const GDScriptASTNodes::DataType &p_key_element_datatype, const GDScriptASTNodes::DataType &p_value_element_datatype, const GDScriptASTNodes::Node *p_source_node = nullptr);
+	GDScriptASTNodes::DataType meta_type_from_container_type(const ContainerType &p_type, const GDScriptASTNodes::Node *p_source);
+	GDScriptASTNodes::DataType type_from_script(const Ref<Script> &p_script, const GDScriptASTNodes::Node *p_source, bool p_is_meta_type);
+	GDScriptASTNodes::DataType type_from_variant(const Variant &p_value, const GDScriptASTNodes::Node *p_source);
+	GDScriptASTNodes::DataType type_from_property_hint_string(const String &p_type_name) const;
+	GDScriptASTNodes::DataType type_from_property(const PropertyInfo &p_property, bool p_is_arg, const GDScriptASTNodes::Node *p_source) const;
+	GDScriptASTNodes::DataType make_global_class_meta_type(const StringName &p_class_name, const GDScriptASTNodes::Node *p_source) const;
+	bool get_function_signature(GDScriptASTNodes::Node *p_source, bool p_is_constructor, GDScriptASTNodes::DataType base_type, const StringName &p_function, GDScriptASTNodes::DataType &r_return_type, List<GDScriptASTNodes::DataType> &r_par_types, int &r_default_arg_count, BitField<MethodFlags> &r_method_flags, StringName *r_native_class = nullptr);
+	bool function_signature_from_info(const MethodInfo &p_info, GDScriptASTNodes::DataType &r_return_type, List<GDScriptASTNodes::DataType> &r_par_types, int &r_default_arg_count, BitField<MethodFlags> &r_method_flags, const GDScriptASTNodes::Node *p_source);
+	void validate_call_arg(const List<GDScriptASTNodes::DataType> &p_par_types, int p_default_args_count, bool p_is_vararg, const GDScriptASTNodes::CallNode *p_call);
+	void validate_call_arg(const MethodInfo &p_method, const GDScriptASTNodes::CallNode *p_call);
+	GDScriptASTNodes::DataType get_operation_type(Variant::Operator p_operation, const GDScriptASTNodes::DataType &p_a, const GDScriptASTNodes::DataType &p_b, bool &r_valid, const GDScriptASTNodes::Node *p_source);
+	GDScriptASTNodes::DataType get_operation_type(Variant::Operator p_operation, const GDScriptASTNodes::DataType &p_a, bool &r_valid, const GDScriptASTNodes::Node *p_source);
+	void update_const_expression_builtin_type(GDScriptASTNodes::ExpressionNode *p_expression, const GDScriptASTNodes::DataType &p_type, const char *p_usage, bool p_is_cast = false);
+	void update_array_literal_element_type(GDScriptASTNodes::ArrayNode *p_array, const GDScriptASTNodes::DataType &p_element_type);
+	void update_dictionary_literal_element_type(GDScriptASTNodes::DictionaryNode *p_dictionary, const GDScriptASTNodes::DataType &p_key_element_type, const GDScriptASTNodes::DataType &p_value_element_type);
+	bool is_type_compatible(const GDScriptASTNodes::DataType &p_target, const GDScriptASTNodes::DataType &p_source, bool p_allow_implicit_conversion = false, const GDScriptASTNodes::Node *p_source_node = nullptr);
+	bool is_type_compatible_strict_collections(const GDScriptASTNodes::DataType &p_target, const GDScriptASTNodes::DataType &p_source);
+	void push_error(const String &p_message, const GDScriptASTNodes::Node *p_origin = nullptr) const;
+	void push_error(const String &p_message, const GDScriptASTNodes::Node *p_origin, int p_start_line, int p_start_column, int p_end_line, int p_end_column) const;
 	/// Marks all lines of `p_node` for being displayed as unsafe in the editor. This has no side effects in the analyzer and is a no-op in template builds.
-	void mark_node_unsafe(const GDScriptParser::Node *p_node) const;
-	void downgrade_node_type_source(GDScriptParser::ExpressionNode *p_node);
+	void mark_node_unsafe(const GDScriptASTNodes::Node *p_node) const;
+	void downgrade_node_type_source(GDScriptASTNodes::ExpressionNode *p_node);
 	void mark_lambda_use_self();
 	void resolve_pending_lambda_bodies();
-	void reduce_identifier_from_base_set_class(GDScriptParser::IdentifierNode *p_identifier, GDScriptParser::DataType p_identifier_datatype);
-	Ref<GDScriptParserRef> ensure_cached_external_parser_for_class(const GDScriptParser::ClassNode *p_class, const GDScriptParser::ClassNode *p_from_class, const char *p_context, const GDScriptParser::Node *p_source);
-	Ref<GDScriptParserRef> find_cached_external_parser_for_class(const GDScriptParser::ClassNode *p_class, const Ref<GDScriptParserRef> &p_dependant_parser);
-	Ref<GDScriptParserRef> find_cached_external_parser_for_class(const GDScriptParser::ClassNode *p_class, GDScriptParser *p_dependant_parser);
+	void reduce_identifier_from_base_set_class(GDScriptASTNodes::IdentifierNode *p_identifier, GDScriptASTNodes::DataType p_identifier_datatype);
+	Ref<GDScriptParserRef> ensure_cached_external_parser_for_class(const GDScriptASTNodes::ClassNode *p_class, const GDScriptASTNodes::ClassNode *p_from_class, const char *p_context, const GDScriptASTNodes::Node *p_source);
+	Ref<GDScriptParserRef> find_cached_external_parser_for_class(const GDScriptASTNodes::ClassNode *p_class, const Ref<GDScriptParserRef> &p_dependant_parser);
+	Ref<GDScriptParserRef> find_cached_external_parser_for_class(const GDScriptASTNodes::ClassNode *p_class, GDScriptParser *p_dependant_parser);
 	Ref<GDScript> get_depended_shallow_script(const String &p_path, Error &r_error);
 
 #ifdef DEBUG_ENABLED
-	void is_shadowing(GDScriptParser::IdentifierNode *p_identifier, const String &p_context, const bool p_in_local_scope);
-	void warn_confusable_temporary_modification(GDScriptParser::ExpressionNode *p_expression);
+	void is_shadowing(GDScriptASTNodes::IdentifierNode *p_identifier, const String &p_context, const bool p_in_local_scope);
+	void warn_confusable_temporary_modification(GDScriptASTNodes::ExpressionNode *p_expression);
 #endif // DEBUG_ENABLED
 
 public:
@@ -172,10 +172,10 @@ public:
 	Error resolve_dependencies();
 	Error analyze();
 
-	Variant make_variable_default_value(GDScriptParser::VariableNode *p_variable);
+	Variant make_variable_default_value(GDScriptASTNodes::VariableNode *p_variable);
 
-	static bool check_type_compatibility(const GDScriptParser::DataType &p_target, const GDScriptParser::DataType &p_source, bool p_allow_implicit_conversion = false, const GDScriptParser::Node *p_source_node = nullptr);
-	static GDScriptParser::DataType type_from_metatype(const GDScriptParser::DataType &p_meta_type);
+	static bool check_type_compatibility(const GDScriptASTNodes::DataType &p_target, const GDScriptASTNodes::DataType &p_source, bool p_allow_implicit_conversion = false, const GDScriptASTNodes::Node *p_source_node = nullptr);
+	static GDScriptASTNodes::DataType type_from_metatype(const GDScriptASTNodes::DataType &p_meta_type);
 	static bool class_exists(const StringName &p_class);
 
 	GDScriptAnalyzer(GDScriptParser *p_parser);

@@ -44,7 +44,7 @@
  * Especially expensive warnings should be implemented through this pass.
  */
 class GDScriptLinter final {
-	using CallbackWithValidation = void(const GDScriptParser::Node *, GDScriptParser &);
+	using CallbackWithValidation = void(const GDScriptASTNodes::Node *, GDScriptParser &);
 
 	GDScriptParser *const tree;
 	static CallbackWithValidation *const checks[];

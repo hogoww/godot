@@ -33,7 +33,7 @@
 #include "../gdscript_parser.h"
 
 class GDScriptDocGen {
-	using GDP = GDScriptParser;
+	using GDP = GDScriptASTNodes;
 	using DataType = GDP::DataType;
 
 	static HashMap<String, String> singletons; // Script path to singleton name.
