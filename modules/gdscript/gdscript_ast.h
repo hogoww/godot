@@ -41,6 +41,7 @@
 #include "core/variant/variant.h"
 
 class GDScriptParser;
+class BaseVisitor;
 
 class GDScriptASTNodes {
 public:
@@ -354,6 +355,8 @@ public:
 		List<AnnotationNode *> annotations;
 
 		virtual bool is_expression() const { return false; }
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		virtual ~Node() {}
 	};
 
@@ -366,6 +369,8 @@ public:
 		DataType type_constraint;
 
 		virtual bool is_expression() const override { return true; }
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		virtual ~ExpressionNode() {}
 
 	protected:
@@ -385,6 +390,7 @@ public:
 
 		bool apply(GDScriptParser *p_this, Node *p_target, ClassNode *p_class);
 		bool applies_to(uint32_t p_target_kinds) const;
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		AnnotationNode() {
 			type = ANNOTATION;
@@ -394,6 +400,8 @@ public:
 	struct ArrayNode : public ExpressionNode {
 		LocalVector<ExpressionNode *> elements;
 
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		ArrayNode() {
 			type = ARRAY;
 		}
@@ -402,6 +410,8 @@ public:
 	struct AssertNode : public Node {
 		ExpressionNode *condition = nullptr;
 		ExpressionNode *message = nullptr;
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		AssertNode() {
 			type = ASSERT;
@@ -417,6 +427,8 @@ public:
 		int usages = 0;
 
 		DataType type_constraint;
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		virtual ~AssignableNode() {}
 
@@ -447,6 +459,8 @@ public:
 		ExpressionNode *assigned_value = nullptr;
 		bool use_conversion_assign = false;
 
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		AssignmentNode() {
 			type = ASSIGNMENT;
 		}
@@ -454,6 +468,8 @@ public:
 
 	struct AwaitNode : public ExpressionNode {
 		ExpressionNode *to_await = nullptr;
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		AwaitNode() {
 			type = AWAIT;
@@ -489,18 +505,24 @@ public:
 		ExpressionNode *left_operand = nullptr;
 		ExpressionNode *right_operand = nullptr;
 
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		BinaryOpNode() {
 			type = BINARY_OPERATOR;
 		}
 	};
 
 	struct BreakNode : public Node {
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		BreakNode() {
 			type = BREAK;
 		}
 	};
 
 	struct BreakpointNode : public Node {
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		BreakpointNode() {
 			type = BREAKPOINT;
 		}
@@ -512,6 +534,8 @@ public:
 		StringName function_name;
 		bool is_super = false;
 		bool is_static = false;
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		CallNode() {
 			type = CALL;
@@ -559,6 +583,8 @@ public:
 #ifdef TOOLS_ENABLED
 		MemberDocData doc_data;
 #endif // TOOLS_ENABLED
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		EnumNode() {
 			type = ENUM;
@@ -815,6 +841,7 @@ public:
 			members_indices[name] = members.size();
 			members.push_back(Member(p_annotation_node));
 		}
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		ClassNode() {
 			type = CLASS;
@@ -826,12 +853,16 @@ public:
 		MemberDocData doc_data;
 #endif // TOOLS_ENABLED
 
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		ConstantNode() {
 			type = CONSTANT;
 		}
 	};
 
 	struct ContinueNode : public Node {
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		ContinueNode() {
 			type = CONTINUE;
 		}
@@ -850,6 +881,8 @@ public:
 		};
 		Style style = PYTHON_DICT;
 
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		DictionaryNode() {
 			type = DICTIONARY;
 		}
@@ -861,6 +894,8 @@ public:
 		bool use_conversion_assign = false;
 		ExpressionNode *list = nullptr;
 		SuiteNode *loop = nullptr;
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		ForNode() {
 			type = FOR;
@@ -897,6 +932,8 @@ public:
 		bool resolved_body = false;
 
 		_FORCE_INLINE_ bool is_vararg() const { return rest_parameter != nullptr; }
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		FunctionNode() {
 			type = FUNCTION;
@@ -948,6 +985,8 @@ public:
 
 		int usages = 0; // Useful for binds/iterator variable.
 
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		IdentifierNode() {
 			type = IDENTIFIER;
 		}
@@ -957,6 +996,8 @@ public:
 		ExpressionNode *condition = nullptr;
 		SuiteNode *true_block = nullptr;
 		SuiteNode *false_block = nullptr;
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		IfNode() {
 			type = IF;
@@ -974,6 +1015,7 @@ public:
 		bool has_name() const {
 			return function && function->identifier;
 		}
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		LambdaNode() {
 			type = LAMBDA;
@@ -983,6 +1025,8 @@ public:
 	struct LiteralNode : public ExpressionNode {
 		Variant value;
 
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		LiteralNode() {
 			type = LITERAL;
 		}
@@ -991,6 +1035,8 @@ public:
 	struct MatchNode : public Node {
 		ExpressionNode *test = nullptr;
 		LocalVector<MatchBranchNode *> branches;
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		MatchNode() {
 			type = MATCH;
@@ -1003,18 +1049,24 @@ public:
 		bool has_wildcard = false;
 		SuiteNode *guard_body = nullptr;
 
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		MatchBranchNode() {
 			type = MATCH_BRANCH;
 		}
 	};
 
 	struct ParameterNode : public AssignableNode {
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		ParameterNode() {
 			type = PARAMETER;
 		}
 	};
 
 	struct PassNode : public Node {
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		PassNode() {
 			type = PASS;
 		}
@@ -1050,6 +1102,7 @@ public:
 
 		bool has_bind(const StringName &p_name);
 		IdentifierNode *get_bind(const StringName &p_name);
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		PatternNode() {
 			type = PATTERN;
@@ -1059,6 +1112,8 @@ public:
 		ExpressionNode *path = nullptr;
 		String resolved_path;
 		Ref<Resource> resource;
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		PreloadNode() {
 			type = PRELOAD;
@@ -1072,6 +1127,8 @@ public:
 		bool void_return = false;
 		bool use_conversion = false;
 
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		ReturnNode() {
 			type = RETURN;
 		}
@@ -1079,6 +1136,8 @@ public:
 
 	struct SelfNode : public ExpressionNode {
 		ClassNode *current_class = nullptr;
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		SelfNode() {
 			type = SELF;
@@ -1098,6 +1157,8 @@ public:
 
 		int usages = 0;
 
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		SignalNode() {
 			type = SIGNAL;
 		}
@@ -1111,6 +1172,8 @@ public:
 		};
 
 		bool is_attribute = false;
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		SubscriptNode() {
 			type = SUBSCRIPT;
@@ -1218,6 +1281,7 @@ public:
 			locals_indices[p_local.name] = locals.size();
 			locals.push_back(p_local);
 		}
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		SuiteNode() {
 			type = SUITE;
@@ -1229,6 +1293,8 @@ public:
 		ExpressionNode *condition = nullptr;
 		ExpressionNode *true_expr = nullptr;
 		ExpressionNode *false_expr = nullptr;
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		TernaryOpNode() {
 			type = TERNARY_OPERATOR;
@@ -1244,6 +1310,7 @@ public:
 		TypeNode *get_container_type_or_null(uint32_t p_index) const {
 			return p_index < container_types.size() ? container_types[p_index] : nullptr;
 		}
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		TypeNode() {
 			type = TYPE;
@@ -1254,6 +1321,8 @@ public:
 		ExpressionNode *operand = nullptr;
 		TypeNode *test_type = nullptr;
 		DataType test_datatype;
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		TypeTestNode() {
 			type = TYPE_TEST;
@@ -1271,6 +1340,8 @@ public:
 		OpType operation = OP_POSITIVE;
 		Variant::Operator variant_op = Variant::OP_MAX;
 		ExpressionNode *operand = nullptr;
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		UnaryOpNode() {
 			type = UNARY_OPERATOR;
@@ -1304,6 +1375,8 @@ public:
 		MemberDocData doc_data;
 #endif // TOOLS_ENABLED
 
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
+
 		VariableNode() {
 			type = VARIABLE;
 		}
@@ -1312,6 +1385,8 @@ public:
 	struct WhileNode : public Node {
 		ExpressionNode *condition = nullptr;
 		SuiteNode *loop = nullptr;
+
+		virtual void accept_visitor(BaseVisitor *p_visitor) const;
 
 		WhileNode() {
 			type = WHILE;

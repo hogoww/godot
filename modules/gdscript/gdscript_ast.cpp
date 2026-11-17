@@ -33,6 +33,7 @@
 #include "gdscript.h"
 #include "gdscript_cache.h"
 #include "gdscript_parser.h"
+#include "visitors/gdscript_base_visitor.h"
 
 #include "core/object/class_db.h"
 
@@ -349,4 +350,125 @@ bool GDScriptASTNodes::DataType::can_reference(const GDScriptASTNodes::DataType 
 
 bool GDScriptASTNodes::AnnotationNode::applies_to(uint32_t p_target_kinds) const {
 	return (info->target_kind & p_target_kinds) > 0;
+}
+
+void GDScriptASTNodes::AnnotationNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_annotation(this);
+}
+void GDScriptASTNodes::ArrayNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_array(this);
+}
+void GDScriptASTNodes::AssertNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_assert(this);
+}
+void GDScriptASTNodes::AssignableNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_assignable(this);
+}
+void GDScriptASTNodes::AssignmentNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_assignment(this);
+}
+void GDScriptASTNodes::AwaitNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_await(this);
+}
+void GDScriptASTNodes::BinaryOpNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_binary_op(this);
+}
+void GDScriptASTNodes::BreakNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_break(this);
+}
+void GDScriptASTNodes::BreakpointNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_breakpoint(this);
+}
+void GDScriptASTNodes::CallNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_call(this);
+}
+void GDScriptASTNodes::EnumNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_enum(this);
+}
+void GDScriptASTNodes::ExpressionNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_expression(this);
+}
+void GDScriptASTNodes::ClassNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_class(this);
+}
+void GDScriptASTNodes::ConstantNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_constant(this);
+}
+void GDScriptASTNodes::ContinueNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_continue(this);
+}
+void GDScriptASTNodes::DictionaryNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_dictionary(this);
+}
+void GDScriptASTNodes::ForNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_for(this);
+}
+void GDScriptASTNodes::FunctionNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_function(this);
+}
+void GDScriptASTNodes::IdentifierNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_identifier(this);
+}
+void GDScriptASTNodes::IfNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_if(this);
+}
+void GDScriptASTNodes::LambdaNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_lambda(this);
+}
+void GDScriptASTNodes::LiteralNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_literal(this);
+}
+void GDScriptASTNodes::MatchNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_match(this);
+}
+void GDScriptASTNodes::MatchBranchNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_match_branch(this);
+}
+void GDScriptASTNodes::Node::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_node(this);
+}
+void GDScriptASTNodes::ParameterNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_parameter(this);
+}
+void GDScriptASTNodes::PassNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_pass(this);
+}
+void GDScriptASTNodes::PatternNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_pattern(this);
+}
+void GDScriptASTNodes::PreloadNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_preload(this);
+}
+void GDScriptASTNodes::ReturnNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_return(this);
+}
+void GDScriptASTNodes::SelfNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_self(this);
+}
+void GDScriptASTNodes::SignalNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_signal(this);
+}
+void GDScriptASTNodes::SubscriptNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_subscript(this);
+}
+void GDScriptASTNodes::SuiteNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_suite(this);
+}
+void GDScriptASTNodes::TernaryOpNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_ternary_op(this);
+}
+void GDScriptASTNodes::TypeNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_type(this);
+}
+void GDScriptASTNodes::TypeTestNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_type_test(this);
+}
+void GDScriptASTNodes::UnaryOpNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_unary_op(this);
+}
+void GDScriptASTNodes::VariableNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_variable(this);
+}
+void GDScriptASTNodes::WhileNode::accept_visitor(BaseVisitor *p_visitor) const {
+	p_visitor->visit_while(this);
 }

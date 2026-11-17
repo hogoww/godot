@@ -44,6 +44,8 @@
 #include "core/string/string_builder.h"
 
 #ifdef TOOLS_ENABLED
+#include "../visitors/gdscript_tree_printer.h"
+
 #include "editor/settings/editor_settings.h"
 #endif
 
@@ -200,8 +202,8 @@ static void test_parser(const String &p_code, const String &p_script_path, const
 	}
 
 #ifdef TOOLS_ENABLED
-	GDScriptParser::TreePrinter printer;
-	printer.print_tree(parser);
+	TreePrinter printer;
+	printer.print_tree(parser.get_tree(), parser.is_tool());
 #endif
 }
 
