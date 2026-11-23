@@ -35,7 +35,7 @@
 
 #include "core/object/class_db.h"
 
-using AST = GDScriptAST;
+namespace AST = GDScriptAST;
 
 bool AST::PatternNode::has_bind(const StringName &p_name) {
 	return binds.has(p_name);
@@ -342,4 +342,37 @@ bool AST::DataType::can_reference(const AST::DataType &p_other) const {
 	}
 
 	return true;
+}
+
+bool AST::DataType::operator==(const DataType &p_other) const {
+	if (type_source == UNDETECTED || p_other.type_source == UNDETECTED) {
+		return true; // Can be considered equal for parsing purposes.
+	}
+
+	if (type_source == INFERRED || p_other.type_source == INFERRED) {
+		return true; // Can be considered equal for parsing purposes.
+	}
+
+	if (kind != p_other.kind) {
+		return false;
+	}
+
+	switch (kind) {
+		case VARIANT:
+			return true; // All variants are the same.
+		case BUILTIN:
+			return builtin_type == p_other.builtin_type;
+		case NATIVE:
+		case ENUM: // Enums use native_type to identify the enum and its base class.
+			return native_type == p_other.native_type;
+		case SCRIPT:
+			return script_type == p_other.script_type;
+		case CLASS:
+			return class_type == p_other.class_type || class_type->fqcn == p_other.class_type->fqcn;
+		case RESOLVING:
+		case UNRESOLVED:
+			break;
+	}
+
+	return false;
 }

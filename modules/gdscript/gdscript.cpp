@@ -68,7 +68,7 @@
 #include "editor/file_system/editor_paths.h"
 #endif
 
-using AST = GDScriptAST;
+namespace AST = GDScriptAST;
 
 ///////////////////////////
 

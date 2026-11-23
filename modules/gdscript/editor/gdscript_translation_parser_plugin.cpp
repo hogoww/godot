@@ -36,7 +36,7 @@
 #include "core/io/resource_loader.h"
 #include "core/templates/fixed_vector.h"
 
-using AST = GDScriptAST;
+namespace AST = GDScriptAST;
 
 void GDScriptEditorTranslationParserPlugin::get_recognized_extensions(List<String> *r_extensions) const {
 	r_extensions->push_back(GDScriptLanguage::get_singleton()->get_extension());

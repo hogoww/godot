@@ -43,7 +43,7 @@
 #include "servers/text/text_server.h"
 #endif
 
-using AST = GDScriptAST;
+namespace AST = GDScriptAST;
 
 // This function is used to determine that a type is "built-in" as opposed to native
 // and custom classes. So `Variant::NIL` and `Variant::OBJECT` are excluded:

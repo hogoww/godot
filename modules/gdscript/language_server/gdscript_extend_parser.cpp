@@ -36,7 +36,7 @@
 #include "gdscript_language_protocol.h"
 #include "gdscript_workspace.h"
 
-using AST = GDScriptAST;
+namespace AST = GDScriptAST;
 
 LSP::Position GodotPosition::to_lsp() const {
 	LSP::Position res;

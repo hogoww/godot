@@ -41,7 +41,7 @@
 #include "core/io/resource_loader.h"
 #include "core/object/class_db.h"
 
-using AST = GDScriptAST;
+namespace AST = GDScriptAST;
 
 bool GDScriptCompiler::_is_class_member_property(CodeGen &codegen, const StringName &p_name) {
 	if (codegen.function_node && codegen.function_node->is_static) {

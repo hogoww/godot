@@ -58,7 +58,7 @@
 #include "editor/settings/editor_settings.h"
 #endif
 
-using AST = GDScriptAST;
+namespace AST = GDScriptAST;
 
 #ifdef TOOLS_ENABLED
 GDScriptEditorLanguage *GDScriptEditorLanguage::singleton = nullptr;

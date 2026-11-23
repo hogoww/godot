@@ -37,7 +37,7 @@
 #include "core/typedefs.h"
 #include "servers/text/text_server.h"
 
-using AST = GDScriptAST;
+namespace AST = GDScriptAST;
 
 // Checks ===========================================================================
 

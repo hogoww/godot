@@ -35,7 +35,7 @@
 #include "core/config/project_settings.h"
 #include "core/doc_data.h"
 
-using AST = GDScriptAST;
+namespace AST = GDScriptAST;
 
 HashMap<String, String> GDScriptDocGen::singletons;
 
