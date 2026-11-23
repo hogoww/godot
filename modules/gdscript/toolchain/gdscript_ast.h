@@ -40,10 +40,6 @@
 #include "core/templates/vector.h"
 #include "core/variant/variant.h"
 
-#ifdef DEBUG_ENABLED
-#include "core/string/string_builder.h" // For TreePrinter
-#endif
-
 class GDScriptParser;
 
 class GDScriptAST {
@@ -1324,58 +1320,3 @@ private:
 		MethodInfo info;
 	};
 }; //class GDScriptAST
-
-#ifdef DEBUG_ENABLED
-class TreePrinter {
-	int indent_level = 0;
-	String indent;
-	StringBuilder printed;
-	bool pending_indent = false;
-
-	void increase_indent();
-	void decrease_indent();
-	void push_line(const String &p_line = String());
-	void push_text(const String &p_text);
-
-	void print_annotation(const GDScriptAST::AnnotationNode *p_annotation);
-	void print_array(const GDScriptAST::ArrayNode *p_array);
-	void print_assert(const GDScriptAST::AssertNode *p_assert);
-	void print_assignment(const GDScriptAST::AssignmentNode *p_assignment);
-	void print_await(const GDScriptAST::AwaitNode *p_await);
-	void print_binary_op(const GDScriptAST::BinaryOpNode *p_binary_op);
-	void print_call(const GDScriptAST::CallNode *p_call);
-	void print_cast(const GDScriptAST::CastNode *p_cast);
-	void print_class(const GDScriptAST::ClassNode *p_class);
-	void print_constant(const GDScriptAST::ConstantNode *p_constant);
-	void print_dictionary(const GDScriptAST::DictionaryNode *p_dictionary);
-	void print_expression(const GDScriptAST::ExpressionNode *p_expression);
-	void print_enum(const GDScriptAST::EnumNode *p_enum);
-	void print_for(const GDScriptAST::ForNode *p_for);
-	void print_function(const GDScriptAST::FunctionNode *p_function, const String &p_context = "Function");
-	void print_get_node(const GDScriptAST::GetNodeNode *p_get_node);
-	void print_if(const GDScriptAST::IfNode *p_if, bool p_is_elif = false);
-	void print_identifier(const GDScriptAST::IdentifierNode *p_identifier);
-	void print_lambda(const GDScriptAST::LambdaNode *p_lambda);
-	void print_literal(const GDScriptAST::LiteralNode *p_literal);
-	void print_match(const GDScriptAST::MatchNode *p_match);
-	void print_match_branch(const GDScriptAST::MatchBranchNode *p_match_branch);
-	void print_match_pattern(const GDScriptAST::PatternNode *p_match_pattern);
-	void print_parameter(const GDScriptAST::ParameterNode *p_parameter);
-	void print_preload(const GDScriptAST::PreloadNode *p_preload);
-	void print_return(const GDScriptAST::ReturnNode *p_return);
-	void print_self(const GDScriptAST::SelfNode *p_self);
-	void print_signal(const GDScriptAST::SignalNode *p_signal);
-	void print_statement(const GDScriptAST::Node *p_statement);
-	void print_subscript(const GDScriptAST::SubscriptNode *p_subscript);
-	void print_suite(const GDScriptAST::SuiteNode *p_suite);
-	void print_ternary_op(const GDScriptAST::TernaryOpNode *p_ternary_op);
-	void print_type(const GDScriptAST::TypeNode *p_type);
-	void print_type_test(const GDScriptAST::TypeTestNode *p_type_test);
-	void print_unary_op(const GDScriptAST::UnaryOpNode *p_unary_op);
-	void print_variable(const GDScriptAST::VariableNode *p_variable);
-	void print_while(const GDScriptAST::WhileNode *p_while);
-
-public:
-	void print_tree(const GDScriptAST::ClassNode *class_tree, const bool is_tool);
-};
-#endif // DEBUG_ENABLED

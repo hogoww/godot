@@ -201,7 +201,7 @@ static void test_parser(const String &p_code, const String &p_script_path, const
 	}
 
 #ifdef TOOLS_ENABLED
-	TreePrinter printer;
+	GDScriptParser::TreePrinter printer;
 	printer.print_tree(parser.get_tree(), parser.is_tool());
 #endif
 }
