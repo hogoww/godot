@@ -35,15 +35,17 @@
 
 #include "core/object/class_db.h"
 
-bool GDScriptAST::PatternNode::has_bind(const StringName &p_name) {
+using AST = GDScriptAST;
+
+bool AST::PatternNode::has_bind(const StringName &p_name) {
 	return binds.has(p_name);
 }
 
-GDScriptAST::IdentifierNode *GDScriptAST::PatternNode::get_bind(const StringName &p_name) {
+AST::IdentifierNode *AST::PatternNode::get_bind(const StringName &p_name) {
 	return binds[p_name];
 }
 
-bool GDScriptAST::SuiteNode::has_local(const StringName &p_name) const {
+bool AST::SuiteNode::has_local(const StringName &p_name) const {
 	if (locals_indices.has(p_name)) {
 		return true;
 	}
@@ -53,7 +55,7 @@ bool GDScriptAST::SuiteNode::has_local(const StringName &p_name) const {
 	return false;
 }
 
-const GDScriptAST::SuiteNode::Local &GDScriptAST::SuiteNode::get_local(const StringName &p_name) const {
+const AST::SuiteNode::Local &AST::SuiteNode::get_local(const StringName &p_name) const {
 	if (locals_indices.has(p_name)) {
 		return locals[locals_indices[p_name]];
 	}
@@ -63,11 +65,11 @@ const GDScriptAST::SuiteNode::Local &GDScriptAST::SuiteNode::get_local(const Str
 	return empty;
 }
 
-bool GDScriptAST::AnnotationNode::applies_to(uint32_t p_target_kinds) const {
+bool AST::AnnotationNode::applies_to(uint32_t p_target_kinds) const {
 	return (info->target_kind & p_target_kinds) > 0;
 }
 
-GDScriptAST::DataType GDScriptAST::SuiteNode::Local::get_datatype() const {
+AST::DataType AST::SuiteNode::Local::get_datatype() const {
 	switch (type) {
 		case CONSTANT:
 			return constant->type_constraint;
@@ -84,7 +86,7 @@ GDScriptAST::DataType GDScriptAST::SuiteNode::Local::get_datatype() const {
 	return DataType();
 }
 
-String GDScriptAST::SuiteNode::Local::get_name() const {
+String AST::SuiteNode::Local::get_name() const {
 	switch (type) {
 		case SuiteNode::Local::PARAMETER:
 			return "parameter";
@@ -103,7 +105,7 @@ String GDScriptAST::SuiteNode::Local::get_name() const {
 	}
 }
 
-String GDScriptAST::DataType::to_string() const {
+String AST::DataType::to_string() const {
 	switch (kind) {
 		case VARIANT:
 			return "Variant";
@@ -155,7 +157,7 @@ String GDScriptAST::DataType::to_string() const {
 	ERR_FAIL_V_MSG("<unresolved type>", "Kind set outside the enum range.");
 }
 
-String GDScriptAST::DataType::to_property_info_hint_string() const {
+String AST::DataType::to_property_info_hint_string() const {
 	switch (kind) {
 		case BUILTIN:
 			return Variant::get_type_name(builtin_type);
@@ -184,7 +186,7 @@ String GDScriptAST::DataType::to_property_info_hint_string() const {
 	ERR_FAIL_V_MSG("Variant", "GDScript bug: Unexpected type kind.");
 }
 
-PropertyInfo GDScriptAST::DataType::to_property_info(const String &p_name) const {
+PropertyInfo AST::DataType::to_property_info(const String &p_name) const {
 	PropertyInfo result;
 	result.name = p_name;
 	result.usage = PROPERTY_USAGE_NONE;
@@ -287,18 +289,18 @@ static Variant::Type _variant_type_to_typed_array_element_type(Variant::Type p_t
 	}
 }
 
-bool GDScriptAST::DataType::is_typed_container_type() const {
-	return kind == GDScriptAST::DataType::BUILTIN && _variant_type_to_typed_array_element_type(builtin_type) != Variant::NIL;
+bool AST::DataType::is_typed_container_type() const {
+	return kind == AST::DataType::BUILTIN && _variant_type_to_typed_array_element_type(builtin_type) != Variant::NIL;
 }
 
-GDScriptAST::DataType GDScriptAST::DataType::get_typed_container_type() const {
-	GDScriptAST::DataType type;
-	type.kind = GDScriptAST::DataType::BUILTIN;
+AST::DataType AST::DataType::get_typed_container_type() const {
+	AST::DataType type;
+	type.kind = AST::DataType::BUILTIN;
 	type.builtin_type = _variant_type_to_typed_array_element_type(builtin_type);
 	return type;
 }
 
-bool GDScriptAST::DataType::can_reference(const GDScriptAST::DataType &p_other) const {
+bool AST::DataType::can_reference(const AST::DataType &p_other) const {
 	if (p_other.is_meta_type) {
 		return false;
 	} else if (builtin_type != p_other.builtin_type) {
@@ -316,7 +318,7 @@ bool GDScriptAST::DataType::can_reference(const GDScriptAST::DataType &p_other) 
 	}
 
 	Ref<Script> script = script_type;
-	if (kind == GDScriptAST::DataType::CLASS && script.is_null()) {
+	if (kind == AST::DataType::CLASS && script.is_null()) {
 		Error err = OK;
 		Ref<GDScript> scr = GDScriptCache::get_shallow_script(script_path, err);
 		ERR_FAIL_COND_V_MSG(err, false, vformat(R"(Error while getting cache for script "%s".)", script_path));
@@ -324,7 +326,7 @@ bool GDScriptAST::DataType::can_reference(const GDScriptAST::DataType &p_other) 
 	}
 
 	Ref<Script> script_other = p_other.script_type;
-	if (p_other.kind == GDScriptAST::DataType::CLASS && script_other.is_null()) {
+	if (p_other.kind == AST::DataType::CLASS && script_other.is_null()) {
 		Error err = OK;
 		Ref<GDScript> scr = GDScriptCache::get_shallow_script(p_other.script_path, err);
 		ERR_FAIL_COND_V_MSG(err, false, vformat(R"(Error while getting cache for script "%s".)", p_other.script_path));

@@ -32,8 +32,9 @@
 
 #ifdef DEBUG_ENABLED
 
-#include "gdscript_parser.h"
 #include "toolchain/gdscript_ast.h"
+
+class GDScriptParser;
 
 /**
  * The `GDScriptLinter` emits warnings based on a completely analyzed AST.
