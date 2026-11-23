@@ -501,6 +501,5 @@ public:
 		void print_tree(const GDScriptAST::ClassNode *class_tree, const bool is_tool);
 	};
 #endif // DEBUG_ENABLED
-
 	static void cleanup();
 };
