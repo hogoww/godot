@@ -6170,10 +6170,11 @@ void GDScriptParser::TreePrinter::print_while(const GDScriptAST::WhileNode *p_wh
 	decrease_indent();
 }
 
-void GDScriptParser::TreePrinter::print_tree(const GDScriptAST::ClassNode *class_tree, const bool is_tool) {
+void GDScriptParser::TreePrinter::print_tree(const GDScriptParser &p_parser) {
+	AST::ClassNode *class_tree = p_parser.get_tree();
 	ERR_FAIL_NULL_MSG(class_tree, "Parse the code before printing the parse tree.");
 
-	if (is_tool) {
+	if (p_parser.is_tool()) {
 		push_line("@tool");
 	}
 	if (!class_tree->icon_path.is_empty()) {

@@ -498,7 +498,7 @@ public:
 		void print_while(const GDScriptAST::WhileNode *p_while);
 
 	public:
-		void print_tree(const GDScriptAST::ClassNode *class_tree, const bool is_tool);
+		void print_tree(const GDScriptParser &p_parser);
 	};
 #endif // DEBUG_ENABLED
 	static void cleanup();

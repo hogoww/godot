@@ -31,6 +31,7 @@
 #pragma once
 
 #ifdef DEBUG_ENABLED
+
 #include "core/error/error_list.h"
 
 class GDScriptParser;
